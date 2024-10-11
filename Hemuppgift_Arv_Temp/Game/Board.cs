@@ -39,7 +39,7 @@ namespace Hemuppgift_Arv_Temp.Game
             {
                 output += "|";
             }
-            Console.WriteLine(output);
+            Console.WriteLine(output + " " + NoPins + " pins left.");
         }
         public int GetNoPins()
         {

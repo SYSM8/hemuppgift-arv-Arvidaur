@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.NetworkInformation;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hemuppgift_Arv_Temp.Game
@@ -17,62 +18,100 @@ namespace Hemuppgift_Arv_Temp.Game
             Player computer = new ComputerPlayer();
             Random rnd = new Random();
             bool donePlaying = false;
-            bool turn = rnd.Next(2) == 0;   //Slumpar vem som startar i början av första spelet
+            int whoStarts = rnd.Next(1, 3);
 
+            bool turn;
+            if (whoStarts == 1)//Slumpar vem som startar i början av första spelet
+            {
+                turn = true;
+            }
+            else
+            {
+                turn = false;
+            }
+            
             Board board1 = new Board(); //Skapar ett board objekt vi använder oss av i spelet
 
             //The game starts
-            Console.WriteLine("Welcome to the pingame.");
-
-            while (!donePlaying)
+            Console.WriteLine("Welcome to the pingame. Select difficulty. 1: Easy. 2: Medium. 3: Hard.");
+            int difficulty;
+            while (true)
             {
-                bool gameOver = false;
-                Console.WriteLine("Select the number of pins to play with:");
-                int pins = 0;
-
-                if (int.TryParse(Console.ReadLine(), out pins) && pins > 0)   //Kontrollerar att det är korrekt inmatning och att pins är ett positivt tal
+                if (int.TryParse(Console.ReadLine(), out difficulty) && difficulty > 0 && difficulty <= 3)   //Kontrollerar att det är korrekt inmatning och att difficulty är mellan 1-3
                 {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Difficulty has to be in the range of 1-3 and");
+                }
+            }
+            while (!donePlaying)
+                {
+                    bool gameOver = false;
+                    Console.WriteLine("Select the number of pins to play with:");
+                    int pins = 0;
+
+                    if(turn)
+                    {
+                        Console.WriteLine($"Player starts");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Computer starts");
+                    }
+                    if (int.TryParse(Console.ReadLine(), out pins) && pins > 0)   //Kontrollerar att det är korrekt inmatning och att pins är ett positivt tal
+                    {
                     board1.SetUp(pins);
                     while (!gameOver)   //Matchen är igång
                     {
+                        
                         if (turn)
                         {
-                            int pinsTaken = human.TakePins();
+                            int pinsTaken = human.TakePins(board1, difficulty);
                             Console.WriteLine($"Human player takes {pinsTaken} pins.");
                             board1.TakePins(pinsTaken);
+                            turn = !turn;
                             if (board1.GetNoPins() == 0)
                             {
-                                Console.WriteLine($"Human is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
                                 humanWin++;
+                                Console.WriteLine($"Human is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
+
+                                turn = false;   //Computer starts if the player wins
                                 gameOver = true;
                             }
                             else if (board1.GetNoPins() <= 0)
                             {
-                                Console.WriteLine($"Human took to many pins and the computer is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
                                 computerWin++;
-                                gameOver = true;
+                                Console.WriteLine($"Human took to many pins and the computer is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
+
+                                turn = true;    //Player starts if computer wins
+                                gameOver = true;                             
                             }
-                            turn = false;
+                            
                         }
                         else
                         {
-                            int pinsTaken = computer.TakePins();
+                            int pinsTaken = computer.TakePins(board1, difficulty);
                             Console.WriteLine($"Computer player takes {pinsTaken} pins.");
                             board1.TakePins(pinsTaken);
-                            
-                            if(board1.GetNoPins() == 0)
+                            turn = !turn;
+                            if (board1.GetNoPins() == 0)
                             {
-                                Console.WriteLine($"Computer is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
                                 computerWin++;
-                                gameOver = true;
+                                Console.WriteLine($"Computer is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
+
+                                turn = true;    //Player starts if computer wins
+                                gameOver = true;  
                             } 
                             else if (board1.GetNoPins() <= 0)
                             {
-                                Console.WriteLine($"The computer took to many pins and human player is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
                                 humanWin++;
+                                Console.WriteLine($"The computer took to many pins and human player is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
+
+                                turn = false;   //Computer starts if the player wins
                                 gameOver = true;
-                            }
-                            turn = true;
+                            }                           
                         }
                     }
                 }
