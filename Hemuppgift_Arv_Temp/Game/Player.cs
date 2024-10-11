@@ -17,7 +17,7 @@ namespace Hemuppgift_Arv_Temp.Game
             this.userId = userId;
         }
 
-        public string GetUserId()
+        public virtual string GetUserId()
         { 
             return userId; 
         }

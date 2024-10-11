@@ -16,23 +16,20 @@ namespace Hemuppgift_Arv_Temp.Game
         //    this.NoPins = NoPins;
         //}
 
+        //"Contructor"
         public void SetUp(int pins)
         {
             NoPins = pins;
+            ShowGameBoard();
         }
         public void TakePins(int pinsTaken)
         {
 
-            if ( pinsTaken > 0 && pinsTaken <= 2)
-            {
+            
                 NoPins -= pinsTaken;
 
                 ShowGameBoard();
-            }
-            else
-            {
-                Console.WriteLine("You only take 1 or 2 pins");
-            }
+            
         }
 
         public void ShowGameBoard() //Metod som printar spelplanen som den ser ut i nuläget

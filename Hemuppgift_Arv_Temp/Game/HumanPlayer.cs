@@ -8,15 +8,30 @@ namespace Hemuppgift_Arv_Temp.Game
 {
     public class HumanPlayer : Player
     {
-        public string name {  get; set; }
-        public HumanPlayer(string name)
+        public HumanPlayer() : base("HumanPlayer")
         {
-            this.name = name;
+
         }
 
         public override int TakePins()
         {
-            return 1;
+            bool correctInput = false;
+            int pins = 0;
+            Console.WriteLine("How many pins do you want to take? 1 or 2.");
+            
+            while (!correctInput)   //Vi kör tills användaren har angett en korrekt inmatning
+            {
+                if (int.TryParse(Console.ReadLine(), out pins) && pins > 0 && pins <= 2)   //Kontrollerar att det är 1 eller 2 pins som tas
+                {
+                    correctInput = true;
+                    return pins;
+                }
+                else
+                {
+                    Console.WriteLine("You may only take 1 or 2 pins, try again");
+                }            
+            }
+            return pins;
         }
     }
 }
