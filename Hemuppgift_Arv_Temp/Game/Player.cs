@@ -22,6 +22,6 @@ namespace Hemuppgift_Arv_Temp.Game
             return userId; 
         }
 
-        public abstract int TakePins(Board board1, int difficulty);
+        public abstract int TakePins(Board board1);
     }
 }

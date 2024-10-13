@@ -16,6 +16,7 @@ namespace Hemuppgift_Arv_Temp.Game
             int computerWin = 0;
             Player human = new HumanPlayer();
             Player computer = new ComputerPlayer();
+            Player smartComputer = new SmartComputerPlayer();
             Random rnd = new Random();
             bool donePlaying = false;
             int whoStarts = rnd.Next(1, 3);
@@ -33,11 +34,11 @@ namespace Hemuppgift_Arv_Temp.Game
             Board board1 = new Board(); //Skapar ett board objekt vi använder oss av i spelet
 
             //The game starts
-            Console.WriteLine("Welcome to the pingame. Select difficulty. 1: Easy. 2: Medium. 3: Hard.");
+            Console.WriteLine("Welcome to the pingame. Select difficulty. 1: Dumb Opponent ( randomized moves ). 2: Smart Opponent");
             int difficulty;
             while (true)
             {
-                if (int.TryParse(Console.ReadLine(), out difficulty) && difficulty > 0 && difficulty <= 3)   //Kontrollerar att det är korrekt inmatning och att difficulty är mellan 1-3
+                if (int.TryParse(Console.ReadLine(), out difficulty) && difficulty > 0 && difficulty <= 2)   //Kontrollerar att det är korrekt inmatning och att difficulty är mellan 1-2
                 {
                     break;
                 }
@@ -46,6 +47,7 @@ namespace Hemuppgift_Arv_Temp.Game
                     Console.WriteLine("Difficulty has to be in the range of 1-3 and");
                 }
             }
+            
             while (!donePlaying)
                 {
                     bool gameOver = false;
@@ -68,11 +70,12 @@ namespace Hemuppgift_Arv_Temp.Game
                         
                         if (turn)
                         {
-                            int pinsTaken = human.TakePins(board1, difficulty);
+                            int pinsTaken = human.TakePins(board1);
                             Console.WriteLine($"Human player takes {pinsTaken} pins.");
                             board1.TakePins(pinsTaken);
                             turn = !turn;
-                            if (board1.GetNoPins() == 0)
+                            
+                            if (board1.GetNoPins() == 0)    //Someone is the winner if we enter either one of the two code blocks
                             {
                                 humanWin++;
                                 Console.WriteLine($"Human is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
@@ -92,11 +95,21 @@ namespace Hemuppgift_Arv_Temp.Game
                         }
                         else
                         {
-                            int pinsTaken = computer.TakePins(board1, difficulty);
+                            int pinsTaken;
+                            if (difficulty == 1)        //Nu använder jag en subklass för en smart opponent och en subklass för den vanliga opponenten
+                            {
+                                pinsTaken = computer.TakePins(board1);
+                            }
+                            else
+                            {
+                                pinsTaken = smartComputer.TakePins(board1);
+                            }
+                            
                             Console.WriteLine($"Computer player takes {pinsTaken} pins.");
                             board1.TakePins(pinsTaken);
                             turn = !turn;
-                            if (board1.GetNoPins() == 0)
+                            
+                            if (board1.GetNoPins() == 0)    //Someone is the winner if we enter either one of the two code blocks
                             {
                                 computerWin++;
                                 Console.WriteLine($"Computer is the winner! Human wins: {humanWin} Computer Wins {computerWin}");
@@ -104,7 +117,7 @@ namespace Hemuppgift_Arv_Temp.Game
                                 turn = true;    //Player starts if computer wins
                                 gameOver = true;  
                             } 
-                            else if (board1.GetNoPins() <= 0)
+                            else if (board1.GetNoPins() <= 0)   
                             {
                                 humanWin++;
                                 Console.WriteLine($"The computer took to many pins and human player is the winner! Human wins: {humanWin} Computer Wins {computerWin}");

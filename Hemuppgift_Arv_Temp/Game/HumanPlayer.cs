@@ -13,7 +13,7 @@ namespace Hemuppgift_Arv_Temp.Game
 
         }
 
-        public override int TakePins(Board board1, int difficulty)
+        public override int TakePins(Board board1)
         {
             bool correctInput = false;
             int pins = 0;
