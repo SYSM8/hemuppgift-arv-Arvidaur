@@ -18,28 +18,22 @@ namespace Hemuppgift_Arv_Temp.Game
         {
             int pinstaken;
 
-            switch (board1.GetNoPins())
+            int noPins = board1.GetNoPins();
+
+            if (noPins % 3 == 1) // 1, 4, 7, 10
             {
-                case 1:
-                    return 1;
-                case 2:
-                    return 2;
-                case 4:
-                    return 1;
-                case 5:
-                    return 2;
-                case 7:
-                    return 1;
-                case 8:
-                    return 2;
-                case 10:
-                    return 1;
-                case 11:
-                    return 2;
-                default:
-                    pinstaken = rnd.Next(1, 3);
-                    return pinstaken;
+                return 1;
+            }
+            else if (noPins % 3 == 2) // 2, 5, 8, 11
+            {
+                return 2;
+            }
+            else //random between 1 and 2
+            {
+                pinstaken = rnd.Next(1, 3);
+                return pinstaken;
             }
         }
     }
 }
+

@@ -8,9 +8,16 @@ namespace Hemuppgift_Arv_Temp.Game
 {
     public class HumanPlayer : Player
     {
-        public HumanPlayer() : base("HumanPlayer")
+        //Properties
+        public string UserId { get; set; }
+        public HumanPlayer(string UserId) : base(UserId)
         {
+            this.UserId = UserId;
+        }
 
+        public override string GetUserId() 
+        {
+            return UserId;
         }
 
         public override int TakePins(Board board1)
